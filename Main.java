@@ -5,6 +5,11 @@ import java.util.Arrays;
 public class Main {
 
 	public static void main(String[] args) {
+		
+		/////////////////////////////////////////////////////////////////////////////////
+		//                                Exercise 1                                  //
+		////////////////////////////////////////////////////////////////////////////////
+		
 		System.out.println("Exercise 1");
 		System.out.println("-----------");
 		
@@ -15,6 +20,9 @@ public class Main {
 		int[] result = n.test(inputs);
 		System.out.println("Output neurons after testing: " + Arrays.toString(result));
 		
+		/////////////////////////////////////////////////////////////////////////////////
+		//                                Exercise 2                                  //
+		////////////////////////////////////////////////////////////////////////////////
 		
 		System.out.println("\nExercise 2");
 		System.out.println("-----------");
@@ -23,6 +31,10 @@ public class Main {
 		result = n.test(modifiedI);
 		System.out.println("Output neurons after testing: " + Arrays.toString(result));
 		
+		/////////////////////////////////////////////////////////////////////////////////
+		//                                Exercise 3                                  //
+		////////////////////////////////////////////////////////////////////////////////
+		
 		System.out.println("\nExercise 3");
 		System.out.println("-----------");
 		int[] noizyI = {1,1,1,1};
@@ -30,6 +42,10 @@ public class Main {
 		result = n.test(noizyI);
 		System.out.println("Output neurons after testing: " + Arrays.toString(result));
 		System.out.println(n);
+		
+		/////////////////////////////////////////////////////////////////////////////////
+		//                                Exercise 4                                  //
+		////////////////////////////////////////////////////////////////////////////////
 		
 		System.out.println("\nExercise 4");
 		System.out.println("-----------");
@@ -44,6 +60,21 @@ public class Main {
 		System.out.println("Output neurons after testing: " + Arrays.toString(result));
 		int[] newResult = n.test(newIns);
 		System.out.println("Output neurons after testing: " + Arrays.toString(newResult));
+		
+		/////////////////////////////////////////////////////////////////////////////////
+		//                                Exercise 5                                  //
+		////////////////////////////////////////////////////////////////////////////////
+		
+		System.out.println("\nExercise 5");
+		System.out.println("-----------");
+		modifiedI = new int[] {1,0,0,0,0,1};
+		System.out.println("Testing with incomplete input:");
+		result = n.test(modifiedI);
+		System.out.println("Output neurons after testing: " + Arrays.toString(result));
+		modifiedI = new int[] {0,1,0,0,0,0};
+		System.out.println("Testing with noisy input:");
+		result = n.test(modifiedI);
+		System.out.println("Output neurons after testing: " + Arrays.toString(result));
 	}
 	
 	public static void trainNet(Network n, int[] inputs, int[] outputs) {
