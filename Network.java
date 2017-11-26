@@ -30,7 +30,6 @@ public class Network {
 		int[] results = new int[size];
 		int[] originalPattern = this.inputs.get(getClosestInputIndex(inputs));
 		int u = this.getU(inputs, originalPattern);
-		System.out.println(u);
 		for(int i = 0 ; i < size ; i++) {
 			int synapSum = 0;
 			for(int j = 0 ; j < size ; j++)

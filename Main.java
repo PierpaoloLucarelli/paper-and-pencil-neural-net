@@ -80,11 +80,28 @@ public class Main {
 		/////////////////////////////////////////////////////////////////////////////////
 		//                                Exercise 6                                  //
 		////////////////////////////////////////////////////////////////////////////////
-
-		int[][] inPatterns = generateRandomPatterns(6);
-		for(int i = 0 ; i < inPatterns.length ; i++) {
-			System.out.println(Arrays.toString(inPatterns[i]));
+		int size = 16;
+		int iterations = 50;
+		int total = 0;
+		for(int j = 0 ; j < iterations ; j++) {
+			n = new Network(size);
+			int[][] inPatterns = generateRandomPatterns(size);
+			int[][] outPatterns = generateRandomPatterns(size);
+			int count = 0;
+			for(int i = 0 ; i < inPatterns.length ; i++) {
+				n.train(inPatterns[i], outPatterns[i]);
+				int[] res = n.test(inPatterns[i]);
+				System.out.println("input syn: " + Arrays.toString(inPatterns[i]));
+				System.out.println("out syn: " + Arrays.toString(outPatterns[i]));
+				System.out.println("res: " + Arrays.toString(res)+"\n");
+				if(Arrays.equals(res, outPatterns[i]))
+					count++;
+				else
+					break;
+			}
+			total += count;
 		}
+		System.out.println("Network on average trained: " + total/iterations + " patterns");
 	}
 
 	
