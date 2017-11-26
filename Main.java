@@ -83,11 +83,14 @@ public class Main {
 		////////////////////////////////////////////////////////////////////////////////
 		System.out.println("\nExercise 6");
 		System.out.println("-----------");
-		int size = 4;
-		int iterations = 200;
+		int size = 6;
+		int iterations = 500;
 		int total = 0;
+		int maxCount = 0;
 		double loadParameter = 0;
+		double maxLoad = 0;
 		double synapsesLoad = 0;
+		double maxSyn = 0;
 		for(int j = 0 ; j < iterations ; j++) {
 			
 			Network net = new Network(size);
@@ -104,16 +107,32 @@ public class Main {
 				if(Arrays.equals(res, outPatterns[i])) {
 					count++;
 				} else {
-					loadParameter += net.getLoadParameter();
-					synapsesLoad += net.synapsesLoad();
+					// network has made an error
+//					System.out.println(net);
+					net.pop();
+					double lp = net.getLoadParameter();
+					double sl = net.synapsesLoad();
+					loadParameter += lp;
+					synapsesLoad += sl;
+					if(lp > maxLoad)
+						maxLoad = lp;
+					if(sl > maxSyn)
+						maxSyn = sl;
 					break;
 				}
 			}
 			total += count;
+			if(count > maxCount)
+				maxCount = count;
 		}
+		
+		System.out.println("Network of size: " + size);
 		System.out.println("Network on average trained: " + total/iterations + " patterns");
 		System.out.println("Network average load param: " + loadParameter/iterations);
 		System.out.println("Network average synapses load: " + synapsesLoad/iterations);
+		System.out.println("Network max load parameter: " + maxLoad);
+		System.out.println("Network max synapses load: " + maxSyn);
+		System.out.println("Network max number of trained patterns: " + maxCount);
 	}
 
 	

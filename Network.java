@@ -88,6 +88,11 @@ public class Network {
 		return activeSynapseCount / Math.pow(this.size, 2);
 	}
 	
+	public void pop() {
+		this.inputs.remove(inputs.size() -1);
+		this.outputs.remove(outputs.size() -1);
+	}
+	
 	@Override
 	public String toString() {
 		String output = "";
