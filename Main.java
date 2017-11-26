@@ -18,7 +18,7 @@ public class Main {
 		int[] outputs = {0,0,1,1};
 		Network n = new Network(inputs.length);
 		trainNet(n, inputs, outputs);
-		int[] result = n.test(inputs);
+		int[] result = n.test(inputs, true);
 		System.out.println("Output neurons after testing: " + Arrays.toString(result));
 		
 		/////////////////////////////////////////////////////////////////////////////////
@@ -29,7 +29,7 @@ public class Main {
 		System.out.println("-----------");
 		int[] modifiedI = {1,0,0,1};
 		System.out.println("Testing with incomplete input: " + Arrays.toString(modifiedI));
-		result = n.test(modifiedI);
+		result = n.test(modifiedI, true);
 		System.out.println("Output neurons after testing: " + Arrays.toString(result));
 		
 		/////////////////////////////////////////////////////////////////////////////////
@@ -40,7 +40,7 @@ public class Main {
 		System.out.println("-----------");
 		int[] noizyI = {1,1,1,1};
 		System.out.println("Testing with noizy input: " + Arrays.toString(noizyI));
-		result = n.test(noizyI);
+		result = n.test(noizyI, true);
 		System.out.println("Output neurons after testing: " + Arrays.toString(result));
 		System.out.println(n);
 		
@@ -57,9 +57,10 @@ public class Main {
 		n = new Network(inputs.length);
 		trainNet(n, inputs, outputs);
 		trainNet(n, newIns, newOuts);
-		result = n.test(inputs);
+		result = n.test(inputs, true);
+		System.out.println("load param: " + n.getLoadParameter());
 		System.out.println("Output neurons after testing: " + Arrays.toString(result));
-		int[] newResult = n.test(newIns);
+		int[] newResult = n.test(newIns, true);
 		System.out.println("Output neurons after testing: " + Arrays.toString(newResult));
 		
 		/////////////////////////////////////////////////////////////////////////////////
@@ -70,38 +71,49 @@ public class Main {
 		System.out.println("-----------");
 		modifiedI = new int[] {1,0,0,0,0,1};
 		System.out.println("Testing with incomplete input:");
-		result = n.test(modifiedI);
+		result = n.test(modifiedI, true);
 		System.out.println("Output neurons after testing: " + Arrays.toString(result));
 		modifiedI = new int[] {0,1,0,0,0,0};
 		System.out.println("Testing with noisy input:");
-		result = n.test(modifiedI);
+		result = n.test(modifiedI, true);
 		System.out.println("Output neurons after testing: " + Arrays.toString(result));
 		
 		/////////////////////////////////////////////////////////////////////////////////
 		//                                Exercise 6                                  //
 		////////////////////////////////////////////////////////////////////////////////
-		int size = 16;
-		int iterations = 50;
+		System.out.println("\nExercise 6");
+		System.out.println("-----------");
+		int size = 4;
+		int iterations = 200;
 		int total = 0;
+		double loadParameter = 0;
+		double synapsesLoad = 0;
 		for(int j = 0 ; j < iterations ; j++) {
-			n = new Network(size);
+			
+			Network net = new Network(size);
+//			System.out.println("n is; " + net);
 			int[][] inPatterns = generateRandomPatterns(size);
 			int[][] outPatterns = generateRandomPatterns(size);
 			int count = 0;
 			for(int i = 0 ; i < inPatterns.length ; i++) {
-				n.train(inPatterns[i], outPatterns[i]);
-				int[] res = n.test(inPatterns[i]);
-				System.out.println("input syn: " + Arrays.toString(inPatterns[i]));
-				System.out.println("out syn: " + Arrays.toString(outPatterns[i]));
-				System.out.println("res: " + Arrays.toString(res)+"\n");
-				if(Arrays.equals(res, outPatterns[i]))
+				net.train(inPatterns[i], outPatterns[i]);
+				int[] res = net.test(inPatterns[i], false);
+//				System.out.println("input syn: " + Arrays.toString(inPatterns[i]));
+//				System.out.println("out syn: " + Arrays.toString(outPatterns[i]));
+//				System.out.println("res: " + Arrays.toString(res)+"\n");
+				if(Arrays.equals(res, outPatterns[i])) {
 					count++;
-				else
+				} else {
+					loadParameter += net.getLoadParameter();
+					synapsesLoad += net.synapsesLoad();
 					break;
+				}
 			}
 			total += count;
 		}
 		System.out.println("Network on average trained: " + total/iterations + " patterns");
+		System.out.println("Network average load param: " + loadParameter/iterations);
+		System.out.println("Network average synapses load: " + synapsesLoad/iterations);
 	}
 
 	
@@ -114,7 +126,6 @@ public class Main {
 	
 	public static int[] intToBinaryArray(int n, int size) {
 		String[] bin = String.format("%"+size+"s", Integer.toBinaryString(n)).replace(' ', '0').split("");
-		System.out.println(Arrays.toString(bin));
 		int[] binArray = new int[bin.length];
 		for (int i = 0; i < bin.length; i++)
 		    binArray[i] = Integer.parseInt(bin[i]);
