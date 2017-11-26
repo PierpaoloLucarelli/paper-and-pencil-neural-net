@@ -82,9 +82,8 @@ public class Network {
 	public double synapsesLoad() {
 		int activeSynapseCount = 0;
 		for(int i = 0 ; i < this.size ; i++) {
-			for(int j = 0 ; i < this.size ; j++) {
+			for(int j = 0 ; i < this.size ; j++)
 				activeSynapseCount += this.synapses[i][j];
-			}
 		}
 		return activeSynapseCount / Math.pow(this.size, 2);
 	}

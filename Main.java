@@ -1,5 +1,6 @@
 package src;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Main {
@@ -75,7 +76,17 @@ public class Main {
 		System.out.println("Testing with noisy input:");
 		result = n.test(modifiedI);
 		System.out.println("Output neurons after testing: " + Arrays.toString(result));
+		
+		/////////////////////////////////////////////////////////////////////////////////
+		//                                Exercise 6                                  //
+		////////////////////////////////////////////////////////////////////////////////
+
+		int[][] inPatterns = generateRandomPatterns(6);
+		for(int i = 0 ; i < inPatterns.length ; i++) {
+			System.out.println(Arrays.toString(inPatterns[i]));
+		}
 	}
+
 	
 	public static void trainNet(Network n, int[] inputs, int[] outputs) {
 		System.out.print("Training " + n.printSize());
@@ -83,5 +94,26 @@ public class Main {
 		System.out.println(" and output: " + Arrays.toString(outputs));
 		n.train(inputs, outputs);
 	}
-
+	
+	public static int[] intToBinaryArray(int n, int size) {
+		String[] bin = String.format("%"+size+"s", Integer.toBinaryString(n)).replace(' ', '0').split("");
+		System.out.println(Arrays.toString(bin));
+		int[] binArray = new int[bin.length];
+		for (int i = 0; i < bin.length; i++)
+		    binArray[i] = Integer.parseInt(bin[i]);
+		return binArray;
+	}
+	
+	public static int[][] generateRandomPatterns(int size) {
+		ArrayList<Integer> list = new ArrayList<>();
+		int[][] patterns = new int[size*2][size];
+		for (int i = 0; i < Math.pow(2, size) ; i++)
+		    list.add(i);
+		int[] a = new int[size*2];
+		for (int count = 0; count < size*2; count++) {
+		    a[count] = list.remove((int)(Math.random() * list.size()));
+		    patterns[count] = intToBinaryArray(a[count], size);
+		}
+		return patterns;
+	}
 }
