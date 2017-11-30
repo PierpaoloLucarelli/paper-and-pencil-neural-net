@@ -1,3 +1,5 @@
+// floating branch
+
 package src;
 
 import java.util.ArrayList;
@@ -6,8 +8,6 @@ import java.util.Arrays;
 public class Main {
 
 	public static void main(String[] args) {
-		
-		// this is the floating branch
 
 		/////////////////////////////////////////////////////////////////////////////////
 		//                                Exercise 1                                  //
@@ -15,13 +15,17 @@ public class Main {
 		
 		System.out.println("Exercise 1");
 		System.out.println("-----------");
-		
+
 		int[] inputs = {1,0,1,1};
-		int[] outputs = {0,0,1,1};
+		int[] outputs = {1,0,0,1};
+		int[] newinputs = {1,1,0,0};
+		int[] newoutputs = {0,1,0,1};
 		Network n = new Network(inputs.length);
 		trainNet(n, inputs, outputs);
+		trainNet(n, newinputs, newoutputs);
 		int[] result = n.test(inputs, true);
 		System.out.println("Output neurons after testing: " + Arrays.toString(result));
+		System.out.println(n);
 		
 		/////////////////////////////////////////////////////////////////////////////////
 		//                                Exercise 2                                  //

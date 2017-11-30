@@ -1,18 +1,18 @@
-// floating branhc
+// floating branch
 package src;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Network {
-	private int[][] synapses;
+	private double[][] synapses;
 	private int size;
 	private ArrayList<int[]> inputs;
 	private ArrayList<int[]> outputs;
 	public Network(int size) {
 		// create 2D array with zeros
 		this.size = size;
-		this.synapses = new int[size][size];
+		this.synapses = new double[size][size];
 		this.inputs = new ArrayList<>();
 		this.outputs = new ArrayList<>();
 	}
@@ -20,10 +20,15 @@ public class Network {
 	public void train(int[] inputs, int[] outputs) {
 		this.inputs.add(inputs);
 		this.outputs.add(outputs);
-		int l = inputs.length;
-		for(int i = 0 ; i < l ; i++)
-			for(int j = 0 ; j < l ; j++)
-				this.synapses[i][j] = (inputs[i] & outputs[j]) | this.synapses[i][j];
+		int l = this.inputs.size();
+		for(int i = 0 ; i < size ; i++ ){
+			for(int j = 0 ; j < size ; j++){
+				int sum = 0;
+				for(int p = 0 ; p < l ; p++)
+					sum += this.inputs.get(p)[i] * this.outputs.get(p)[j];
+				this.synapses[i][j] = sum / (double)this.size;
+			}
+		}
 	}
 	
 	public int[] test(int[] inputs, boolean debug) {
