@@ -36,9 +36,9 @@ public class Network {
 			System.out.println("Testing input: " + Arrays.toString(inputs));
 		int[] results = new int[size];
 		int[] originalPattern = this.inputs.get(getClosestInputIndex(inputs));
-		int u = this.getU(inputs, originalPattern);
+		double u = this.getU(inputs, originalPattern);
 		for(int i = 0 ; i < size ; i++) {
-			int synapSum = 0;
+			double synapSum = 0;
 			for(int j = 0 ; j < size ; j++)
 				synapSum += inputs[j] * synapses[j][i];
 			results[i] = (synapSum >= u ? 1 : 0);
@@ -71,14 +71,14 @@ public class Network {
 		return (int)Math.pow(this.size,2) + " synapse network (" + this.size + "x" + this.size + ")";
 	}
 	
-	private int getU(int[] inputs, int[] original) {
-		int u = 0; 
-		int u2 = 0;
+	private double getU(int[] inputs, int[] original) {
+		double u = 0; 
+		double u2 = 0;
 		for(int i = 0 ; i < size ; i++) {
 			u += inputs[i];
 			u2 += original[i];
 		}
-		return u <= u2 ? u : u2;
+		return u <= u2 ? u /this.size : u2 / this.size;
 	}
 	
 	public double getLoadParameter() {

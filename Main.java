@@ -25,6 +25,8 @@ public class Main {
 		trainNet(n, newinputs, newoutputs);
 		int[] result = n.test(inputs, true);
 		System.out.println("Output neurons after testing: " + Arrays.toString(result));
+		int[] result2 = n.test(newinputs, true);
+		System.out.println("Output neurons after testing: " + Arrays.toString(result2));
 		System.out.println(n);
 		
 		/////////////////////////////////////////////////////////////////////////////////
