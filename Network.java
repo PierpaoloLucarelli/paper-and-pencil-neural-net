@@ -27,7 +27,7 @@ public class Network {
 	
 	public int[] test(int[] inputs, boolean debug) {
 		if(debug)
-		System.out.println("Testing input: " + Arrays.toString(inputs));
+			System.out.println("Testing input: " + Arrays.toString(inputs));
 		int[] results = new int[size];
 		int[] originalPattern = this.inputs.get(getClosestInputIndex(inputs));
 		int u = this.getU(inputs, originalPattern);

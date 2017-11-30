@@ -58,7 +58,6 @@ public class Main {
 		trainNet(n, inputs, outputs);
 		trainNet(n, newIns, newOuts);
 		result = n.test(inputs, true);
-		System.out.println("load param: " + n.getLoadParameter());
 		System.out.println("Output neurons after testing: " + Arrays.toString(result));
 		int[] newResult = n.test(newIns, true);
 		System.out.println("Output neurons after testing: " + Arrays.toString(newResult));
