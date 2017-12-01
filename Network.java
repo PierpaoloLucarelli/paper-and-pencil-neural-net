@@ -16,18 +16,18 @@ public class Network {
 		this.outputs = new ArrayList<>();
 	}
 	
-	public void train(int[] inputs, int[] outputs) {
-		this.inputs.add(inputs);
-		this.outputs.add(outputs);
-		int l = inputs.length;
+	public void train(int[][] inputs, int[][] outputs) {
+		addInputs(inputs, outputs);
+		int l = inputs[0].length;
 		for(int i = 0 ; i < l ; i++)
 			for(int j = 0 ; j < l ; j++)
-				this.synapses[i][j] = (inputs[i] & outputs[j]) | this.synapses[i][j];
+				for(int p = 0 ; p < inputs.length ; p++)
+					this.synapses[i][j] = (inputs[p][i] & outputs[p][j]) | this.synapses[i][j];
 	}
 	
 	public int[] test(int[] inputs, boolean debug) {
 		if(debug)
-		System.out.println("Testing input: " + Arrays.toString(inputs));
+			System.out.println("Testing input: " + Arrays.toString(inputs));
 		int[] results = new int[size];
 		int[] originalPattern = this.inputs.get(getClosestInputIndex(inputs));
 		int u = this.getU(inputs, originalPattern);
@@ -73,6 +73,13 @@ public class Network {
 			u2 += original[i];
 		}
 		return u <= u2 ? u : u2;
+	}
+
+	private void addInputs(int[][] inputs, int[][] outputs){
+		for(int i = 0 ; i < inputs.length ; i++){
+			this.inputs.add(inputs[i]);
+			this.outputs.add(outputs[i]);
+		}	
 	}
 	
 	public double getLoadParameter() {
