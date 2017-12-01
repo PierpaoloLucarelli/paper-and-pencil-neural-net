@@ -24,20 +24,21 @@ public class Network {
 				synapses[i*l+j] = (inputs[i] & outputs[j]) | synapses[i*l+j];
 	}
 	
-	// public int[] test(int[] inputs, boolean debug) {
-	// 	if(debug)
-	// 	System.out.println("Testing input: " + Arrays.toString(inputs));
-	// 	int[] results = new int[size];
-	// 	int[] originalPattern = this.inputs.get(getClosestInputIndex(inputs));
-	// 	int u = this.getU(inputs, originalPattern);
-	// 	for(int i = 0 ; i < size ; i++) {
-	// 		int synapSum = 0;
-	// 		for(int j = 0 ; j < size ; j++)
-	// 			synapSum += inputs[j] * synapses[j][i];
-	// 		results[i] = (synapSum >= u ? 1 : 0);
-	// 	}
-	// 	return results;
-	// }
+	public int[] test(int[] inputs, boolean debug) {
+		if(debug)
+		System.out.println("Testing input: " + Arrays.toString(inputs));
+		int[] results = new int[(int)Math.sqrt(size)];
+		int[] originalPattern = this.inputs.get(getClosestInputIndex(inputs));
+		int u = this.getU(inputs, originalPattern);
+		int l = inputs.length;
+		for(int i = 0 ; i < l ; i++) {
+			int synapSum = 0;
+			for(int j = 0 ; j < l ; j++)
+				synapSum += inputs[j] * synapses[j*l+i];
+			results[i] = (synapSum >= u ? 1 : 0);
+		}
+		return results;
+	}
 	
 	private int hammingDistance(int[] i, int[] i2) {
 		int dist = 0;
@@ -67,7 +68,7 @@ public class Network {
 	private int getU(int[] inputs, int[] original) {
 		int u = 0; 
 		int u2 = 0;
-		for(int i = 0 ; i < size ; i++) {
+		for(int i = 0 ; i < inputs.length ; i++) {
 			u += inputs[i];
 			u2 += original[i];
 		}
@@ -75,7 +76,7 @@ public class Network {
 	}
 	
 	public double getLoadParameter() {
-		return this.inputs.size() / (double)this.size;
+		return this.inputs.size() / Math.sqrt(this.size);
 	}
 
 	private void savePair(int[] inputs, int[] outputs){
@@ -83,22 +84,24 @@ public class Network {
 		this.outputs.add(outputs);
 	}
 	
-	// public double synapsesLoad() {
-	// 	int activeSynapseCount = 0;
-	// 	for(int i = 0 ; i < this.size; i++) {
-	// 		for(int j = 0 ; j < this.size ; j++) 
-	// 			activeSynapseCount += this.synapses[i][j];
-	// 	}
-	// 	return activeSynapseCount / Math.pow(this.size, 2);
-	// }
-	
-	public void pop() {
-		this.inputs.remove(inputs.size() -1);
-		this.outputs.remove(outputs.size() -1);
+	public double synapsesLoad() {
+		int activeSynapseCount = 0;
+		for(int i = 0 ; i < this.size ; i++) 
+			activeSynapseCount += this.synapses[i];
+		return activeSynapseCount / (double)this.size;
 	}
+	
+	// public void pop() {
+	// 	this.inputs.remove(inputs.size() -1);
+	// 	this.outputs.remove(outputs.size() -1);
+	// }
 	
 	@Override
 	public String toString() {
-		return Arrays.toString(this.synapses) + "\n";
+		String output = "[";
+		for(int i = 0 ; i < synapses.length ; i++){
+			output += synapses[i] + ", " + ((i+1) % Math.sqrt(this.size) == 0 ? "\n" : "");
+		}
+		return output.substring(0, output.length() - 3)+"]";
 	}
 }

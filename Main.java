@@ -19,19 +19,19 @@ public class Main {
 		Network n = new Network(inputs.length);
 		trainNet(n, inputs, outputs);
 		System.out.println(n);
-		// int[] result = n.test(inputs, true);
-		// System.out.println("Output neurons after testing: " + Arrays.toString(result));
+		int[] result = n.test(inputs, true);
+		System.out.println("Output neurons after testing: " + Arrays.toString(result));
 		
 		/////////////////////////////////////////////////////////////////////////////////
 		//                                Exercise 2                                  //
 		////////////////////////////////////////////////////////////////////////////////
 		
-// 		System.out.println("\nExercise 2");
-// 		System.out.println("-----------");
-// 		int[] modifiedI = {1,0,0,1};
-// 		System.out.println("Testing with incomplete input: " + Arrays.toString(modifiedI));
-// 		result = n.test(modifiedI, true);
-// 		System.out.println("Output neurons after testing: " + Arrays.toString(result));
+		System.out.println("\nExercise 2");
+		System.out.println("-----------");
+		int[] modifiedI = {1,0,0,1};
+		System.out.println("Testing with incomplete input: " + Arrays.toString(modifiedI));
+		result = n.test(modifiedI, true);
+		System.out.println("Output neurons after testing: " + Arrays.toString(result));
 		
 // 		/////////////////////////////////////////////////////////////////////////////////
 // 		//                                Exercise 3                                  //
