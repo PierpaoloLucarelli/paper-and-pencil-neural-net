@@ -91,10 +91,10 @@ public class Network {
 		return activeSynapseCount / (double)this.size;
 	}
 	
-	// public void pop() {
-	// 	this.inputs.remove(inputs.size() -1);
-	// 	this.outputs.remove(outputs.size() -1);
-	// }
+	public void pop() {
+		this.inputs.remove(inputs.size() -1);
+		this.outputs.remove(outputs.size() -1);
+	}
 	
 	@Override
 	public String toString() {
