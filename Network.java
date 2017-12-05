@@ -8,6 +8,7 @@ public class Network {
 	private int size;
 	private ArrayList<int[]> inputs;
 	private ArrayList<int[]> outputs;
+	
 	public Network(int size) {
 		// create 2D array with zeros
 		this.size = size;
@@ -16,15 +17,16 @@ public class Network {
 		this.outputs = new ArrayList<>();
 	}
 	
+	// strengthens the synapses given an input and output pattern
 	public void train(int[] inputs, int[] outputs) {
-		this.inputs.add(inputs);
-		this.outputs.add(outputs);
+		saveInputs(inputs, outputs);
 		int l = inputs.length;
 		for(int i = 0 ; i < l ; i++)
 			for(int j = 0 ; j < l ; j++)
-				this.synapses[i][j] = (inputs[i] & outputs[j]) | this.synapses[i][j];
+				synapses[i][j] = (inputs[i] & outputs[j]) | synapses[i][j];
 	}
 	
+
 	public int[] test(int[] inputs, boolean debug) {
 		if(debug)
 		System.out.println("Testing input: " + Arrays.toString(inputs));
@@ -34,12 +36,13 @@ public class Network {
 		for(int i = 0 ; i < size ; i++) {
 			int synapSum = 0;
 			for(int j = 0 ; j < size ; j++)
-				synapSum += inputs[j] * synapses[j][i];
+				synapSum += inputs[j] & synapses[j][i];
 			results[i] = (synapSum >= u ? 1 : 0);
 		}
 		return results;
 	}
 	
+	// returns the number of different digits between two patterns
 	private int hammingDistance(int[] i, int[] i2) {
 		int dist = 0;
 		for(int j = 0 ; j < i.length ; j++)
@@ -63,6 +66,12 @@ public class Network {
 	
 	public String printSize() {
 		return (int)Math.pow(this.size,2) + " synapse network (" + this.size + "x" + this.size + ")";
+	}
+
+	// saves the inputs that have been trained
+	private void saveInputs(int[] inputs, int[] outputs){
+		this.inputs.add(inputs);
+		this.outputs.add(outputs);
 	}
 	
 	private int getU(int[] inputs, int[] original) {

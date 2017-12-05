@@ -83,32 +83,20 @@ public class Main {
 		////////////////////////////////////////////////////////////////////////////////
 		System.out.println("\nExercise 6");
 		System.out.println("-----------");
-		int size = 6;
-		int iterations = 500;
-		int total = 0;
-		int maxCount = 0;
-		double loadParameter = 0;
-		double maxLoad = 0;
-		double synapsesLoad = 0;
-		double maxSyn = 0;
+		int size = 10, iterations = 500, total = 0, maxCount = 0;
+		double loadParameter = 0, maxLoad = 0, synapsesLoad = 0, maxSyn = 0;
 		for(int j = 0 ; j < iterations ; j++) {
-			
 			Network net = new Network(size);
-//			System.out.println("n is; " + net);
 			int[][] inPatterns = generateRandomPatterns(size);
 			int[][] outPatterns = generateRandomPatterns(size);
 			int count = 0;
 			for(int i = 0 ; i < inPatterns.length ; i++) {
 				net.train(inPatterns[i], outPatterns[i]);
 				int[] res = net.test(inPatterns[i], false);
-//				System.out.println("input syn: " + Arrays.toString(inPatterns[i]));
-//				System.out.println("out syn: " + Arrays.toString(outPatterns[i]));
-//				System.out.println("res: " + Arrays.toString(res)+"\n");
 				if(Arrays.equals(res, outPatterns[i])) {
 					count++;
 				} else {
 					// network has made an error
-//					System.out.println(net);
 					net.pop();
 					double lp = net.getLoadParameter();
 					double sl = net.synapsesLoad();
