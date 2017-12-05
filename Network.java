@@ -36,7 +36,7 @@ public class Network {
 		for(int i = 0 ; i < size ; i++) {
 			int synapSum = 0;
 			for(int j = 0 ; j < size ; j++)
-				synapSum += inputs[j] & synapses[j][i];
+				synapSum += inputs[j] * synapses[j][i];
 			results[i] = (synapSum >= u ? 1 : 0);
 		}
 		return results;
