@@ -34,12 +34,22 @@ public class Network {
 		int[] originalPattern = this.inputs.get(getClosestInputIndex(inputs));
 		int u = this.getU(inputs, originalPattern);
 		for(int i = 0 ; i < size ; i++) {
-			int synapSum = 0;
-			for(int j = 0 ; j < size ; j++)
-				synapSum += inputs[j] * synapses[j][i]; // aggreagator
-			results[i] = (synapSum >= u ? 1 : 0); // comparator
+			int synapSum = aggregator(inputs, i);
+			results[i] = comparator(u,synapSum);
 		}
 		return results;
+	}
+
+
+	private int aggregator(int[] inputs, int i){
+		int synapSum = 0;
+		for(int j = 0 ; j < size ; j++)
+				synapSum += inputs[j] * synapses[j][i];
+		return synapSum;
+	}
+
+	private int comparator(int u, int synapSum){
+		return synapSum >= u ? 1 : 0;
 	}
 	
 	// returns the number of different digits between two patterns
