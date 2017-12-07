@@ -26,28 +26,35 @@ public class Network {
 				synapses[i][j] = (inputs[i] & outputs[j]) | synapses[i][j];
 	}
 	
-
+	/*
+		test algorithm:
+		1) given an input, find the cloasest matching pattern by using the Hamming dist
+		2) calculate the least number of 1s bewteen the original and closest input
+		3) for each column in the synap matrix, run the integrator and comparator
+		4) return the predicted output pattern
+	*/
 	public int[] test(int[] inputs, boolean debug) {
 		if(debug)
 		System.out.println("Testing input: " + Arrays.toString(inputs));
 		int[] results = new int[size];
-		int[] originalPattern = this.inputs.get(getClosestInputIndex(inputs));
+		int[] originalPattern = getClosestInput(inputs);
 		int u = this.getU(inputs, originalPattern);
 		for(int i = 0 ; i < size ; i++) {
-			int synapSum = aggregator(inputs, i);
+			int synapSum = integrator(inputs, i);
 			results[i] = comparator(u,synapSum);
 		}
 		return results;
 	}
 
-
-	private int aggregator(int[] inputs, int i){
+	// calculates the sum of the product of an input pattern with a synap column at index i 
+	private int integrator(int[] inputs, int i){
 		int synapSum = 0;
 		for(int j = 0 ; j < size ; j++)
-				synapSum += inputs[j] * synapses[j][i];
+			synapSum += inputs[j] * synapses[j][i];
 		return synapSum;
 	}
 
+	// returns 1 if the column sum is grater than the threshold, otherwise returns 0
 	private int comparator(int u, int synapSum){
 		return synapSum >= u ? 1 : 0;
 	}
@@ -61,7 +68,7 @@ public class Network {
 	}
 	
 	// get the closest original input pattern given another pattern using Hamming distance 
-	public  int getClosestInputIndex(int[] input) {
+	public int[] getClosestInput(int[] input) {
 		int minDist = input.length;
 		int minIndex = 0;
 		for(int i = 0 ; i < this.inputs.size() ; i++) {
@@ -71,7 +78,7 @@ public class Network {
 				minIndex = i;
 			}
 		}
-		return minIndex;
+		return this.inputs.get(minIndex);
 	}
 	
 	public String printSize() {
@@ -84,6 +91,7 @@ public class Network {
 		this.outputs.add(outputs);
 	}
 	
+	// returns the least number of 1s in 2 patterns (threshold)
 	private int getU(int[] inputs, int[] original) {
 		int u = 0; 
 		int u2 = 0;
@@ -94,10 +102,12 @@ public class Network {
 		return u <= u2 ? u : u2;
 	}
 	
+	// returns the load parameter of the network
 	public double getLoadParameter() {
 		return this.inputs.size() / (double)this.size;
 	}
 	
+	// returns the fraction of strengthened synapses
 	public double synapsesLoad() {
 		int activeSynapseCount = 0;
 		for(int i = 0 ; i < this.size; i++) {
