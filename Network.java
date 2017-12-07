@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Network {
-	private int[][] synapses;
+	private int[] synapses;
 	private int size;
 	private ArrayList<int[]> inputs;
 	private ArrayList<int[]> outputs;
 	
 	public Network(int size) {
 		// create 2D array with zeros
-		this.size = size;
-		this.synapses = new int[size][size];
+		this.size = size*size;
+		this.synapses = new int[this.size];
 		this.inputs = new ArrayList<>();
 		this.outputs = new ArrayList<>();
 	}
@@ -23,7 +23,7 @@ public class Network {
 		int l = inputs.length;
 		for(int i = 0 ; i < l ; i++)
 			for(int j = 0 ; j < l ; j++)
-				synapses[i][j] = (inputs[i] & outputs[j]) | synapses[i][j];
+				synapses[i*l+j] = (inputs[i] & outputs[j]) | synapses[i*l+j];
 	}
 	
 	/*
@@ -36,10 +36,10 @@ public class Network {
 	public int[] test(int[] inputs, boolean debug) {
 		if(debug)
 		System.out.println("Testing input: " + Arrays.toString(inputs));
-		int[] results = new int[size];
+		int[] results = new int[(int)Math.sqrt(size)];
 		int[] originalPattern = getClosestInput(inputs);
 		int u = this.getU(inputs, originalPattern);
-		for(int i = 0 ; i < size ; i++) {
+		for(int i = 0 ; i < inputs.length ; i++) {
 			int synapSum = integrator(inputs, i);
 			results[i] = comparator(u,synapSum);
 		}
@@ -49,8 +49,9 @@ public class Network {
 	// calculates the sum of the product of an input pattern with a synap column at index i 
 	private int integrator(int[] inputs, int i){
 		int synapSum = 0;
-		for(int j = 0 ; j < size ; j++)
-			synapSum += inputs[j] * synapses[j][i];
+		int l = inputs.length;
+		for(int j = 0 ; j < l ; j++)
+			synapSum += inputs[j] * synapses[j*l+i];
 		return synapSum;
 	}
 
@@ -82,7 +83,7 @@ public class Network {
 	}
 	
 	public String printSize() {
-		return (int)Math.pow(this.size,2) + " synapse network (" + this.size + "x" + this.size + ")";
+		return (int)Math.sqrt(this.size) + " input network (" + this.size + "x" + this.size + ")";
 	}
 
 	// saves the inputs that have been trained
@@ -95,7 +96,7 @@ public class Network {
 	private int getU(int[] inputs, int[] original) {
 		int u = 0; 
 		int u2 = 0;
-		for(int i = 0 ; i < size ; i++) {
+		for(int i = 0 ; i < inputs.length ; i++) {
 			u += inputs[i];
 			u2 += original[i];
 		}
@@ -104,17 +105,15 @@ public class Network {
 	
 	// returns the load parameter of the network
 	public double getLoadParameter() {
-		return this.inputs.size() / (double)this.size;
+		return this.inputs.size() / Math.sqrt(this.size);
 	}
 	
 	// returns the fraction of strengthened synapses
 	public double synapsesLoad() {
 		int activeSynapseCount = 0;
-		for(int i = 0 ; i < this.size; i++) {
-			for(int j = 0 ; j < this.size ; j++) 
-				activeSynapseCount += this.synapses[i][j];
-		}
-		return activeSynapseCount / Math.pow(this.size, 2);
+		for(int i = 0 ; i < this.size ; i++) 
+			activeSynapseCount += this.synapses[i];
+		return activeSynapseCount / (double)this.size;
 	}
 	
 	public void pop() {
@@ -124,9 +123,10 @@ public class Network {
 	
 	@Override
 	public String toString() {
-		String output = "";
-		for(int i = 0 ; i < size ; i ++)
-			output += Arrays.toString(this.synapses[i]) + "\n";
-		return output;
+		String output = "[";
+		for(int i = 0 ; i < synapses.length ; i++){
+			output += synapses[i] + ", " + ((i+1) % Math.sqrt(this.size) == 0 ? "\n" : "");
+		}
+		return output.substring(0, output.length() - 3)+"]";
 	}
 }
