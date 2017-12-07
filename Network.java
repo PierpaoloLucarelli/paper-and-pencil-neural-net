@@ -5,10 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Network {
-	private int[] synapses;
+	private double[] synapses;
 	private int size;
-	private ArrayList<int[]> inputs;
-	private ArrayList<int[]> outputs;
+	private ArrayList<double[]> inputs;
+	private ArrayList<double[]> outputs;
 	
 	public Network(int size) {
 		// create 2D array with zeros
@@ -19,7 +19,7 @@ public class Network {
 	}
 	
 	// strengthens the synapses given an input and output pattern
-	public void train(int[] inputs, int[] outputs) {
+	public void train(double[] inputs, double[] outputs) {
 		saveInputs(inputs, outputs);
 		int l = inputs.length;
 		for(int i = 0 ; i < l ; i++)
