@@ -14,13 +14,14 @@ public class Main {
 		System.out.println("Exercise 1");
 		System.out.println("-----------");
 		
-		double[] inputs = {0.1,0.5,0.6,0.9};
-		double[] outputs = {0.9,0.7,0.8,0.5};
+		double[] inputs = {0.5,0.7,0.8};
+		double[] outputs = {0.9,0.3,0.7};
 		
 		Network n = new Network(inputs.length);
 		trainNet(n, inputs, outputs);
-		int[] result = n.test(inputs, true);
-		System.out.println("Output neurons after testing: " + Arrays.toString(result));
+		// double[] result = n.test(inputs, true);
+		// System.out.println("Output neurons after testing: " + Arrays.toString(result));
+		System.out.println(n);
 		
 		// /////////////////////////////////////////////////////////////////////////////////
 		// //                                Exercise 2                                  //
@@ -125,7 +126,7 @@ public class Main {
 	}
 
 	
-	public static void trainNet(Network n, int[] inputs, int[] outputs) {
+	public static void trainNet(Network n, double[] inputs, double[] outputs) {
 		System.out.print("Training " + n.printSize());
 		System.out.print(" with input: " + Arrays.toString(inputs));
 		System.out.println(" and output: " + Arrays.toString(outputs));

@@ -13,7 +13,7 @@ public class Network {
 	public Network(int size) {
 		// create 2D array with zeros
 		this.size = size*size;
-		this.synapses = new int[this.size];
+		this.synapses = new double[this.size];
 		this.inputs = new ArrayList<>();
 		this.outputs = new ArrayList<>();
 	}
@@ -24,7 +24,7 @@ public class Network {
 		int l = inputs.length;
 		for(int i = 0 ; i < l ; i++)
 			for(int j = 0 ; j < l ; j++)
-				synapses[i*l+j] = (inputs[i] & outputs[j]) | synapses[i*l+j];
+				synapses[i*l+j] += (inputs[i] * outputs[j]) / this.size;
 	}
 	
 	/*
@@ -34,21 +34,19 @@ public class Network {
 		3) for each column in the synap matrix, run the integrator and comparator
 		4) return the predicted output pattern
 	*/
-	public int[] test(int[] inputs, boolean debug) {
+	public int[] test(double[] inputs, boolean debug) {
 		if(debug)
 		System.out.println("Testing input: " + Arrays.toString(inputs));
 		int[] results = new int[(int)Math.sqrt(size)];
-		int[] originalPattern = getClosestInput(inputs);
-		int u = this.getU(inputs, originalPattern);
 		for(int i = 0 ; i < inputs.length ; i++) {
 			int synapSum = integrator(inputs, i);
-			results[i] = comparator(u,synapSum);
+//			results[i] = comparator(u,synapSum);
 		}
 		return results;
 	}
 
 	// calculates the sum of the product of an input pattern with a synap column at index i 
-	private int integrator(int[] inputs, int i){
+	private int integrator(double[] inputs, int i){
 		int synapSum = 0;
 		int l = inputs.length;
 		for(int j = 0 ; j < l ; j++)
@@ -62,19 +60,19 @@ public class Network {
 	}
 	
 	// returns the number of different digits between two patterns
-	private int hammingDistance(int[] i, int[] i2) {
-		int dist = 0;
+	private double hammingDistance(double[] i, double[] i2) {
+		double dist = 0;
 		for(int j = 0 ; j < i.length ; j++)
-			dist += i[j] ^ i2[j]; // X-OR
+			dist += Math.abs(i[j] - i2[j]); 
 		return dist;
 	}
 	
 	// get the closest original input pattern given another pattern using Hamming distance 
-	public int[] getClosestInput(int[] input) {
-		int minDist = input.length;
+	public double[] getClosestInput(double[] input) {
+		double minDist = input.length;
 		int minIndex = 0;
 		for(int i = 0 ; i < this.inputs.size() ; i++) {
-			int d = this.hammingDistance(input, this.inputs.get(i));
+			double d = this.hammingDistance(input, this.inputs.get(i));
 			if(d < minDist) {
 				minDist = d;
 				minIndex = i;
@@ -88,13 +86,13 @@ public class Network {
 	}
 
 	// saves the inputs that have been trained
-	private void saveInputs(int[] inputs, int[] outputs){
+	private void saveInputs(double[] inputs, double[] outputs){
 		this.inputs.add(inputs);
 		this.outputs.add(outputs);
 	}
 	
 	// returns the least number of 1s in 2 patterns (threshold)
-	private int getU(int[] inputs, int[] original) {
+	private int getU(double[] inputs, double[] original) {
 		int u = 0; 
 		int u2 = 0;
 		for(int i = 0 ; i < inputs.length ; i++) {
