@@ -19,9 +19,9 @@ public class Main {
 		
 		Network n = new Network(inputs.length);
 		trainNet(n, inputs, outputs);
-		// double[] result = n.test(inputs, true);
-		// System.out.println("Output neurons after testing: " + Arrays.toString(result));
-		System.out.println(n);
+		double[] result = n.test(inputs, true);
+		System.out.println("Output neurons after testing: " + Arrays.toString(result));
+		// System.out.println(n);
 		
 		// /////////////////////////////////////////////////////////////////////////////////
 		// //                                Exercise 2                                  //

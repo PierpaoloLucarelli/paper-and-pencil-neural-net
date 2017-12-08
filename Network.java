@@ -24,7 +24,8 @@ public class Network {
 		int l = inputs.length;
 		for(int i = 0 ; i < l ; i++)
 			for(int j = 0 ; j < l ; j++)
-				synapses[i*l+j] += (inputs[i] * outputs[j]) / this.size;
+				synapses[i*l+j] += (inputs[i] * outputs[j]);
+		normalize();
 	}
 	
 	/*
@@ -34,20 +35,34 @@ public class Network {
 		3) for each column in the synap matrix, run the integrator and comparator
 		4) return the predicted output pattern
 	*/
-	public int[] test(double[] inputs, boolean debug) {
+	public double[] test(double[] inputs, boolean debug) {
 		if(debug)
 		System.out.println("Testing input: " + Arrays.toString(inputs));
-		int[] results = new int[(int)Math.sqrt(size)];
+		double[] results = new double[(int)Math.sqrt(size)];
 		for(int i = 0 ; i < inputs.length ; i++) {
-			int synapSum = integrator(inputs, i);
-//			results[i] = comparator(u,synapSum);
+			double synapSum = integrator(inputs, i);
+			results[i] = sigmoid(synapSum);
 		}
 		return results;
 	}
 
+
+	// normalise the synaptic weights
+	public void normalize(){
+		double max = 0;
+		for(int i = 0 ; i < this.synapses.length ; i++)
+			if(synapses[i] > max) max = synapses[i];
+		for(int i = 0 ; i < this.synapses.length ; i++)
+			this.synapses[i] /= max;
+	}
+
+	public double sigmoid(double sum){
+		return 1 / (1 + Math.pow(Math.E, -sum));
+	}
+
 	// calculates the sum of the product of an input pattern with a synap column at index i 
-	private int integrator(double[] inputs, int i){
-		int synapSum = 0;
+	private double integrator(double[] inputs, int i){
+		double synapSum = 0;
 		int l = inputs.length;
 		for(int j = 0 ; j < l ; j++)
 			synapSum += inputs[j] * synapses[j*l+i];
