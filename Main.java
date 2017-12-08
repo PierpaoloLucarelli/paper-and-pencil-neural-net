@@ -14,113 +14,117 @@ public class Main {
 		System.out.println("Exercise 1");
 		System.out.println("-----------");
 		
-		int[] inputs = {1,0,1,1};
-		int[] outputs = {0,0,1,1};
+		int[] inputs = {1,0,1,0,0,1};
+		int[] outputs = {1,1,0,1,1,0};
+//		int[] newI = {0,1,0,0,1,0};
+//		int[] newO = {1,0,1,0,0,1};
 		Network n = new Network(inputs.length);
 		trainNet(n, inputs, outputs);
+//		trainNet(n, newI, newO);
+		System.out.println(n);
 		int[] result = n.test(inputs, true);
 		System.out.println("Output neurons after testing: " + Arrays.toString(result));
 		
 		/////////////////////////////////////////////////////////////////////////////////
-		//                                Exercise 2                                  //
-		////////////////////////////////////////////////////////////////////////////////
-		
-		System.out.println("\nExercise 2");
-		System.out.println("-----------");
-		int[] modifiedI = {1,0,0,1};
-		System.out.println("Testing with incomplete input: " + Arrays.toString(modifiedI));
-		result = n.test(modifiedI, true);
-		System.out.println("Output neurons after testing: " + Arrays.toString(result));
-		
-		/////////////////////////////////////////////////////////////////////////////////
-		//                                Exercise 3                                  //
-		////////////////////////////////////////////////////////////////////////////////
-		
-		System.out.println("\nExercise 3");
-		System.out.println("-----------");
-		int[] noizyI = {1,1,1,1};
-		System.out.println("Testing with noizy input: " + Arrays.toString(noizyI));
-		result = n.test(noizyI, true);
-		System.out.println("Output neurons after testing: " + Arrays.toString(result));
-		System.out.println(n);
-		
-		/////////////////////////////////////////////////////////////////////////////////
-		//                                Exercise 4                                  //
-		////////////////////////////////////////////////////////////////////////////////
-		
-		System.out.println("\nExercise 4");
-		System.out.println("-----------");
-		inputs = new int[] {1,0,1,0,0,1};
-		outputs = new int[] {1,1,0,0,1,1};
-		int[] newIns = {0,1,1,0,0,0};
-		int[] newOuts = {1,1,0,1,0,1};
-		n = new Network(inputs.length);
-		trainNet(n, inputs, outputs);
-		trainNet(n, newIns, newOuts);
-		result = n.test(inputs, true);
-		System.out.println("load param: " + n.getLoadParameter());
-		System.out.println("Output neurons after testing: " + Arrays.toString(result));
-		int[] newResult = n.test(newIns, true);
-		System.out.println("Output neurons after testing: " + Arrays.toString(newResult));
-		
-		/////////////////////////////////////////////////////////////////////////////////
-		//                                Exercise 5                                  //
-		////////////////////////////////////////////////////////////////////////////////
-		
-		System.out.println("\nExercise 5");
-		System.out.println("-----------");
-		modifiedI = new int[] {1,0,0,0,0,1};
-		System.out.println("Testing with incomplete input:");
-		result = n.test(modifiedI, true);
-		System.out.println("Output neurons after testing: " + Arrays.toString(result));
-		modifiedI = new int[] {0,1,0,0,0,0};
-		System.out.println("Testing with noisy input:");
-		result = n.test(modifiedI, true);
-		System.out.println("Output neurons after testing: " + Arrays.toString(result));
-		
-		/////////////////////////////////////////////////////////////////////////////////
-		//                                Exercise 6                                  //
-		////////////////////////////////////////////////////////////////////////////////
-		System.out.println("\nExercise 6");
-		System.out.println("-----------");
-		int size = 10, iterations = 500, total = 0, maxCount = 0;
-		double loadParameter = 0, maxLoad = 0, synapsesLoad = 0, maxSyn = 0;
-		for(int j = 0 ; j < iterations ; j++) {
-			Network net = new Network(size);
-			int[][] inPatterns = generateRandomPatterns(size);
-			int[][] outPatterns = generateRandomPatterns(size);
-			int count = 0;
-			for(int i = 0 ; i < inPatterns.length ; i++) {
-				net.train(inPatterns[i], outPatterns[i]);
-				int[] res = net.test(inPatterns[i], false);
-				if(Arrays.equals(res, outPatterns[i])) {
-					count++;
-				} else {
-					// network has made an error
-					net.pop();
-					double lp = net.getLoadParameter();
-					double sl = net.synapsesLoad();
-					loadParameter += lp;
-					synapsesLoad += sl;
-					if(lp > maxLoad)
-						maxLoad = lp;
-					if(sl > maxSyn)
-						maxSyn = sl;
-					break;
-				}
-			}
-			total += count;
-			if(count > maxCount)
-				maxCount = count;
-		}
-		
-		System.out.println("Network of size: " + size);
-		System.out.println("Network on average trained: " + total/iterations + " patterns");
-		System.out.println("Network average load param: " + loadParameter/iterations);
-		System.out.println("Network average synapses load: " + synapsesLoad/iterations);
-		System.out.println("Network max load parameter: " + maxLoad);
-		System.out.println("Network max synapses load: " + maxSyn);
-		System.out.println("Network max number of trained patterns: " + maxCount);
+//		//                                Exercise 2                                  //
+//		////////////////////////////////////////////////////////////////////////////////
+//		
+//		System.out.println("\nExercise 2");
+//		System.out.println("-----------");
+//		int[] modifiedI = {1,0,0,1};
+//		System.out.println("Testing with incomplete input: " + Arrays.toString(modifiedI));
+//		result = n.test(modifiedI, true);
+//		System.out.println("Output neurons after testing: " + Arrays.toString(result));
+//		
+//		/////////////////////////////////////////////////////////////////////////////////
+//		//                                Exercise 3                                  //
+//		////////////////////////////////////////////////////////////////////////////////
+//		
+//		System.out.println("\nExercise 3");
+//		System.out.println("-----------");
+//		int[] noizyI = {1,1,1,1};
+//		System.out.println("Testing with noizy input: " + Arrays.toString(noizyI));
+//		result = n.test(noizyI, true);
+//		System.out.println("Output neurons after testing: " + Arrays.toString(result));
+//		System.out.println(n);
+//		
+//		/////////////////////////////////////////////////////////////////////////////////
+//		//                                Exercise 4                                  //
+//		////////////////////////////////////////////////////////////////////////////////
+//		
+//		System.out.println("\nExercise 4");
+//		System.out.println("-----------");
+//		inputs = new int[] {1,0,1,0,0,1};
+//		outputs = new int[] {1,1,0,0,1,1};
+//		int[] newIns = {0,1,1,0,0,0};
+//		int[] newOuts = {1,1,0,1,0,1};
+//		n = new Network(inputs.length);
+//		trainNet(n, inputs, outputs);
+//		trainNet(n, newIns, newOuts);
+//		result = n.test(inputs, true);
+//		System.out.println("load param: " + n.getLoadParameter());
+//		System.out.println("Output neurons after testing: " + Arrays.toString(result));
+//		int[] newResult = n.test(newIns, true);
+//		System.out.println("Output neurons after testing: " + Arrays.toString(newResult));
+//		
+//		/////////////////////////////////////////////////////////////////////////////////
+//		//                                Exercise 5                                  //
+//		////////////////////////////////////////////////////////////////////////////////
+//		
+//		System.out.println("\nExercise 5");
+//		System.out.println("-----------");
+//		modifiedI = new int[] {1,0,0,0,0,1};
+//		System.out.println("Testing with incomplete input:");
+//		result = n.test(modifiedI, true);
+//		System.out.println("Output neurons after testing: " + Arrays.toString(result));
+//		modifiedI = new int[] {0,1,0,0,0,0};
+//		System.out.println("Testing with noisy input:");
+//		result = n.test(modifiedI, true);
+//		System.out.println("Output neurons after testing: " + Arrays.toString(result));
+//		
+//		/////////////////////////////////////////////////////////////////////////////////
+//		//                                Exercise 6                                  //
+//		////////////////////////////////////////////////////////////////////////////////
+//		System.out.println("\nExercise 6");
+//		System.out.println("-----------");
+//		int size = 10, iterations = 500, total = 0, maxCount = 0;
+//		double loadParameter = 0, maxLoad = 0, synapsesLoad = 0, maxSyn = 0;
+//		for(int j = 0 ; j < iterations ; j++) {
+//			Network net = new Network(size);
+//			int[][] inPatterns = generateRandomPatterns(size);
+//			int[][] outPatterns = generateRandomPatterns(size);
+//			int count = 0;
+//			for(int i = 0 ; i < inPatterns.length ; i++) {
+//				net.train(inPatterns[i], outPatterns[i]);
+//				int[] res = net.test(inPatterns[i], false);
+//				if(Arrays.equals(res, outPatterns[i])) {
+//					count++;
+//				} else {
+//					// network has made an error
+//					net.pop();
+//					double lp = net.getLoadParameter();
+//					double sl = net.synapsesLoad();
+//					loadParameter += lp;
+//					synapsesLoad += sl;
+//					if(lp > maxLoad)
+//						maxLoad = lp;
+//					if(sl > maxSyn)
+//						maxSyn = sl;
+//					break;
+//				}
+//			}
+//			total += count;
+//			if(count > maxCount)
+//				maxCount = count;
+//		}
+//		
+//		System.out.println("Network of size: " + size);
+//		System.out.println("Network on average trained: " + total/iterations + " patterns");
+//		System.out.println("Network average load param: " + loadParameter/iterations);
+//		System.out.println("Network average synapses load: " + synapsesLoad/iterations);
+//		System.out.println("Network max load parameter: " + maxLoad);
+//		System.out.println("Network max synapses load: " + maxSyn);
+//		System.out.println("Network max number of trained patterns: " + maxCount);
 	}
 
 	

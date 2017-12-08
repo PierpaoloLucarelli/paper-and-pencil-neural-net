@@ -1,10 +1,11 @@
+// efficient 2
 package src;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Network {
-	private int[] synapses;
+	SparseSynap synapses;
 	private int size;
 	private ArrayList<int[]> inputs;
 	private ArrayList<int[]> outputs;
@@ -12,7 +13,7 @@ public class Network {
 	public Network(int size) {
 		// create 2D array with zeros
 		this.size = size*size;
-		this.synapses = new int[this.size];
+		this.synapses = new SparseSynap();
 		this.inputs = new ArrayList<>();
 		this.outputs = new ArrayList<>();
 	}
@@ -22,8 +23,10 @@ public class Network {
 		saveInputs(inputs, outputs);
 		int l = inputs.length;
 		for(int i = 0 ; i < l ; i++)
-			for(int j = 0 ; j < l ; j++)
-				synapses[i*l+j] = (inputs[i] & outputs[j]) | synapses[i*l+j];
+			for(int j = 0 ; j < l ; j++) {
+				if(inputs[i] * outputs[j] == 1 && !synapses.hasVal(i, j))
+					synapses.addVal(i, j, 1);
+			}
 	}
 	
 	/*
@@ -51,7 +54,9 @@ public class Network {
 		int synapSum = 0;
 		int l = inputs.length;
 		for(int j = 0 ; j < l ; j++)
-			synapSum += inputs[j] * synapses[j*l+i];
+			if(synapses.hasVal(j,i)) {
+				synapSum++;
+			}
 		return synapSum;
 	}
 
@@ -108,13 +113,13 @@ public class Network {
 		return this.inputs.size() / Math.sqrt(this.size);
 	}
 	
-	// returns the fraction of strengthened synapses
-	public double synapsesLoad() {
-		int activeSynapseCount = 0;
-		for(int i = 0 ; i < this.size ; i++) 
-			activeSynapseCount += this.synapses[i];
-		return activeSynapseCount / (double)this.size;
-	}
+//	// returns the fraction of strengthened synapses
+//	public double synapsesLoad() {
+//		int activeSynapseCount = 0;
+//		for(int i = 0 ; i < this.size ; i++) 
+//			activeSynapseCount += this.synapses[i];
+//		return activeSynapseCount / (double)this.size;
+//	}
 	
 	public void pop() {
 		this.inputs.remove(inputs.size() -1);
@@ -123,10 +128,9 @@ public class Network {
 	
 	@Override
 	public String toString() {
-		String output = "[";
-		for(int i = 0 ; i < synapses.length ; i++){
-			output += synapses[i] + ", " + ((i+1) % Math.sqrt(this.size) == 0 ? "\n" : "");
-		}
-		return output.substring(0, output.length() - 3)+"]";
+		String output = "network of size: " + Math.sqrt(this.size);
+		output += "\nSynapses:\n";
+		output += this.synapses.toString();
+		return output;
 	}
 }
