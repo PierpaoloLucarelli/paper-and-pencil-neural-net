@@ -6,58 +6,22 @@ import java.util.Arrays;
 public class Main {
 
 	public static void main(String[] args) {
+	
 		
-		/////////////////////////////////////////////////////////////////////////////////
-		//                                Exercise 1                                  //
-		////////////////////////////////////////////////////////////////////////////////
-		
-		System.out.println("Exercise 1");
-		System.out.println("-----------");
-		
-		int[] inputs = {1,0,1,1};
-		int[] outputs = {0,0,1,1};
-		Network n = new Network(inputs.length);
-		trainNet(n, inputs, outputs);
-		int[] result = n.test(inputs, true);
-		System.out.println("Output neurons after testing: " + Arrays.toString(result));
-		
-		/////////////////////////////////////////////////////////////////////////////////
-		//                                Exercise 2                                  //
-		////////////////////////////////////////////////////////////////////////////////
-		
-		System.out.println("\nExercise 2");
-		System.out.println("-----------");
-		int[] modifiedI = {1,0,0,1};
-		System.out.println("Testing with incomplete input: " + Arrays.toString(modifiedI));
-		result = n.test(modifiedI, true);
-		System.out.println("Output neurons after testing: " + Arrays.toString(result));
-		
-// 		/////////////////////////////////////////////////////////////////////////////////
-// 		//                                Exercise 3                                  //
+ 		/////////////////////////////////////////////////////////////////////////////////
+ 		//                                Using hidden layers                                  //
 // 		////////////////////////////////////////////////////////////////////////////////
 		
-		System.out.println("\nExercise 3");
+		System.out.println("\nUsing hidden layers");
 		System.out.println("-----------");
-		int[] noizyI = {1,1,1,1};
-		System.out.println("Testing with noizy input: " + Arrays.toString(noizyI));
-		result = n.test(noizyI, true);
-		System.out.println("Output neurons after testing: " + Arrays.toString(result));
-		System.out.println(n);
-		
-// 		/////////////////////////////////////////////////////////////////////////////////
-// 		//                                Exercise 4                                  //
-// 		////////////////////////////////////////////////////////////////////////////////
-		
-		System.out.println("\nExercise 4");
-		System.out.println("-----------");
-		inputs = new int[] {1,0,1,0,0,1};
-		outputs = new int[] {1,1,0,0,1,1};
+		int[] inputs = new int[] {1,0,1,0,0,1};
+		int[] outputs = new int[] {1,1,0,0,1,1};
 		int[] newIns = {0,1,1,0,0,0};
 		int[] newOuts = {1,1,0,1,0,1};
-		n = new Network(inputs.length);
+		Network n = new Network(inputs.length);
 		trainNet(n, inputs, outputs);
 		trainNet(n, newIns, newOuts);
-		result = n.test(inputs, true);
+		int[] result = n.test(inputs, true);
 		System.out.println("Output neurons after testing: " + Arrays.toString(result));
 		int[] newResult = n.test(newIns, true);
 		System.out.println("Output neurons after testing: " + Arrays.toString(newResult));
@@ -66,9 +30,8 @@ public class Main {
  		//                                Exercise 5                                  //
  		////////////////////////////////////////////////////////////////////////////////
 		
-		System.out.println("\nExercise 5");
 		System.out.println("-----------");
-		modifiedI = new int[] {1,0,0,0,0,1};
+		int[] modifiedI = new int[] {1,0,0,0,0,1};
 		System.out.println("Testing with incomplete input:");
 		result = n.test(modifiedI, true);
 		System.out.println("Output neurons after testing: " + Arrays.toString(result));
@@ -80,9 +43,9 @@ public class Main {
  		/////////////////////////////////////////////////////////////////////////////////
  		//                                Exercise 6                                  //
  		////////////////////////////////////////////////////////////////////////////////
-		System.out.println("\nExercise 6");
+		System.out.println("\nTesting performance");
 		System.out.println("-----------");
-		int size = 20;
+		int size = 10;
 		int iterations = 500;
 		int total = 0;
 		int maxCount = 0;
