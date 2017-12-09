@@ -55,7 +55,7 @@ public class Network {
 		int l = inputs.length;
 		for(int j = 0 ; j < l ; j++)
 			if(synapses.hasVal(j,i)) {
-				synapSum++;
+				synapSum += inputs[j];
 			}
 		return synapSum;
 	}

@@ -16,14 +16,16 @@ public class Main {
 		
 		int[] inputs = {1,0,1,0,0,1};
 		int[] outputs = {1,1,0,1,1,0};
-//		int[] newI = {0,1,0,0,1,0};
-//		int[] newO = {1,0,1,0,0,1};
+		int[] newI = {0,1,0,0,1,0};
+		int[] newO = {1,0,1,0,0,1};
 		Network n = new Network(inputs.length);
 		trainNet(n, inputs, outputs);
-//		trainNet(n, newI, newO);
+		trainNet(n, newI, newO);
 		System.out.println(n);
 		int[] result = n.test(inputs, true);
 		System.out.println("Output neurons after testing: " + Arrays.toString(result));
+		int[] result2 = n.test(newI, true);
+		System.out.println("Output neurons after testing: " + Arrays.toString(result2));
 		
 		/////////////////////////////////////////////////////////////////////////////////
 //		//                                Exercise 2                                  //
