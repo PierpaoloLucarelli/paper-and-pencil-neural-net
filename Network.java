@@ -17,7 +17,13 @@ public class Network {
 		this.outputs = new ArrayList<>();
 	}
 	
-	// strengthens the synapses given an input and output pattern
+	/*
+		Training algorithm:
+		1) for each combination between input and output bits
+			- Calculate the logical AND between in and out
+			- Use this value to perform logical OR with the current weight
+		This mantains the hebbian proprety of the network
+	*/
 	public void train(int[] inputs, int[] outputs) {
 		saveInputs(inputs, outputs);
 		int l = inputs.length;
