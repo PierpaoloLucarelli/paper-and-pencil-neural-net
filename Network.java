@@ -114,12 +114,9 @@ public class Network {
 	}
 	
 //	// returns the fraction of strengthened synapses
-//	public double synapsesLoad() {
-//		int activeSynapseCount = 0;
-//		for(int i = 0 ; i < this.size ; i++) 
-//			activeSynapseCount += this.synapses[i];
-//		return activeSynapseCount / (double)this.size;
-//	}
+	public double synapsesLoad() {
+		return synapses.activeSynapses() / (double)this.size;
+	}
 	
 	public void pop() {
 		this.inputs.remove(inputs.size() -1);

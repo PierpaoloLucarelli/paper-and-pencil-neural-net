@@ -20,15 +20,11 @@ public class SparseSynap {
 				return true;
 		return false;
 	}
-	
-//	public int sumColumn(int[] inputs, int col) {
-//		int sum = 0;
-//		for(int i = 0 ; i < inputs.length ; i++) {
-//			sum += (inputs[i] * )
-//		}
-//	}
 
-	
+	public int activeSynapses(){
+		return this.synapses.size();
+	}
+
 	@Override
 	public String toString(){
 		String output = "";
