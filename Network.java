@@ -18,7 +18,11 @@ public class Network {
 		this.outputs = new ArrayList<>();
 	}
 	
-	// strengthens the synapses given an input and output pattern
+	/*
+		Train algorithm:
+		1) using equation 2 form the Paper, we multiply input and output and sum
+		2) we normalize tha weights to get values between 0 and 1
+	*/
 	public void train(double[] inputs, double[] outputs) {
 		saveInputs(inputs, outputs);
 		int l = inputs.length;
@@ -29,11 +33,9 @@ public class Network {
 	}
 	
 	/*
-		test algorithm:
-		1) given an input, find the cloasest matching pattern by using the Hamming dist
-		2) calculate the least number of 1s bewteen the original and closest input
-		3) for each column in the synap matrix, run the integrator and comparator
-		4) return the predicted output pattern
+		Test algorithm:
+		1) Run integrator to sum all comllumns
+		2) Use the sigmoid function to get a fuzzy output value
 	*/
 	public double[] test(double[] inputs, boolean debug) {
 		if(debug)
