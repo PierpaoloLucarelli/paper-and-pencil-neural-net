@@ -8,10 +8,10 @@ public class Main {
 	public static void main(String[] args) {
 		
 		/////////////////////////////////////////////////////////////////////////////////
-		//                                Exercise 1                                  //
+		//                                Using sparese matrix                                 //
 		////////////////////////////////////////////////////////////////////////////////
 		
-		System.out.println("Exercise 1");
+		System.out.println("Using sparse matrix");
 		System.out.println("-----------");
 		
 		int[] inputs = {1,0,1,0,0,1};
@@ -29,9 +29,9 @@ public class Main {
 		
 		
 		/////////////////////////////////////////////////////////////////////////////////
-		//                                Exercise 6                                  //
+		//                                Performance test                                  //
 		////////////////////////////////////////////////////////////////////////////////
-		System.out.println("\nExercise 6");
+		System.out.println("\nTesting performance");
 		System.out.println("-----------");
 		int size = 10, iterations = 500, total = 0, maxCount = 0;
 		double loadParameter = 0, maxLoad = 0, synapsesLoad = 0, maxSyn = 0;
