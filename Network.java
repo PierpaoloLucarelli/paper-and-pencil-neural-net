@@ -48,18 +48,29 @@ public class Network {
 		3) for each column in the synap matrix, run the integrator and comparator
 		4) return the predicted output pattern
 	*/
-	// public int[] test(int[] inputs, boolean debug) {
-	// 	if(debug)
-	// 	System.out.println("Testing input: " + Arrays.toString(inputs));
-	// 	int[] results = new int[(int)Math.sqrt(size)];
-	// 	int[] originalPattern = getClosestInput(inputs);
-	// 	int u = this.getU(inputs, originalPattern);
-	// 	for(int i = 0 ; i < inputs.length ; i++) {
-	// 		int synapSum = integrator(inputs, i);
-	// 		results[i] = comparator(u,synapSum);
-	// 	}
-	// 	return results;
-	// }
+	public int[] test(int[] inputs, boolean debug) {
+		if(debug)
+		System.out.println("Testing input: " + Arrays.toString(inputs));
+		int[] results = new int[this.width];
+		int index = getInputIndex(inputs);
+		System.out.println("index is: " + index);
+		// int u = this.getU(inputs, originalPattern);
+		// for(int i = 0 ; i < inputs.length ; i++) {
+		// 	int synapSum = integrator(inputs, i);
+		// 	results[i] = comparator(u,synapSum);
+		// }
+		return results;
+	}
+
+	public int getInputIndex(int[] inputs){
+		for(int i = 0 ; i < this.inputs.size() ; i++){
+			for(int j = 0 ; j < inputs.length ; j++){
+				if(Arrays.equals(this.inputs.get(i), inputs))
+					return i;
+			}
+		}
+		return -1;
+	}
 
 	// // calculates the sum of the product of an input pattern with a synap column at index i 
 	// private int integrator(int[] inputs, int i){

@@ -21,8 +21,8 @@ public class Main {
 		int[] outputs = {0,0,1,1};
 		Network n = new Network(outputs.length, outputs.length * inputs.length);
 		trainNet(n, inputs, outputs);
-		System.out.println(n);
-		// int[] result = n.test(inputs, true);
+		// System.out.println(n);
+		int[] result = n.test(i1, true);
 		// System.out.println("Output neurons after testing: " + Arrays.toString(result));
 	}
 
