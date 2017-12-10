@@ -35,7 +35,7 @@ public class Network {
 				longInput[inputs[i].length * i + j] = inputs[i][j];
 			}
 		}
-		System.out.println("long inputs: " + Arrays.toString(longInput));
+		System.out.println("inputs converted to single long input: " + Arrays.toString(longInput));
 		for(int i = 0 ; i < longInput.length ; i++)
 			for(int j = 0 ; j < this.width ; j++)
 				synapses[i*this.width+j] = (longInput[i] & outputs[j]) | synapses[i*this.width+j];
@@ -53,12 +53,12 @@ public class Network {
 		System.out.println("Testing input: " + Arrays.toString(inputs));
 		int[] results = new int[this.width];
 		int index = getInputIndex(inputs);
-		System.out.println("index is: " + index);
-		// int u = this.getU(inputs, originalPattern);
-		// for(int i = 0 ; i < inputs.length ; i++) {
-		// 	int synapSum = integrator(inputs, i);
-		// 	results[i] = comparator(u,synapSum);
-		// }
+		int[] originalPattern = this.getClosestInput(inputs);
+		int u = this.getU(inputs, originalPattern);
+		for(int i = 0 ; i < inputs.length ; i++){
+			int synapSum = integrator(inputs, i, index);
+			results[i] = comparator(u,synapSum);
+		}
 		return results;
 	}
 
@@ -72,41 +72,41 @@ public class Network {
 		return -1;
 	}
 
-	// // calculates the sum of the product of an input pattern with a synap column at index i 
-	// private int integrator(int[] inputs, int i){
-	// 	int synapSum = 0;
-	// 	int l = inputs.length;
-	// 	for(int j = 0 ; j < l ; j++)
-	// 		synapSum += inputs[j] * synapses[j*l+i];
-	// 	return synapSum;
-	// }
+	// calculates the sum of the product of an input pattern with a synap column at index i 
+	private int integrator(int[] inputs, int i, int inputNum){
+		int synapSum = 0;
+		int l = this.width;
+		for(int j = 0 ; j < l ; j++)
+			synapSum += inputs[j] * synapses[(j*l+i) + ((int) Math.pow(this.width,2) * inputNum)];
+		return synapSum;
+	}
 
-	// // returns 1 if the column sum is grater than the threshold, otherwise returns 0
-	// private int comparator(int u, int synapSum){
-	// 	return synapSum >= u ? 1 : 0;
-	// }
+	// returns 1 if the column sum is grater than the threshold, otherwise returns 0
+	private int comparator(int u, int synapSum){
+		return synapSum >= u ? 1 : 0;
+	}
 	
-	// // returns the number of different digits between two patterns
-	// private int hammingDistance(int[] i, int[] i2) {
-	// 	int dist = 0;
-	// 	for(int j = 0 ; j < i.length ; j++)
-	// 		dist += i[j] ^ i2[j]; // X-OR
-	// 	return dist;
-	// }
+	// returns the number of different digits between two patterns
+	private int hammingDistance(int[] i, int[] i2) {
+		int dist = 0;
+		for(int j = 0 ; j < i.length ; j++)
+			dist += i[j] ^ i2[j]; // X-OR
+		return dist;
+	}
 	
-	// // get the closest original input pattern given another pattern using Hamming distance 
-	// public int[] getClosestInput(int[] input) {
-	// 	int minDist = input.length;
-	// 	int minIndex = 0;
-	// 	for(int i = 0 ; i < this.inputs.size() ; i++) {
-	// 		int d = this.hammingDistance(input, this.inputs.get(i));
-	// 		if(d < minDist) {
-	// 			minDist = d;
-	// 			minIndex = i;
-	// 		}
-	// 	}
-	// 	return this.inputs.get(minIndex);
-	// }
+	// get the closest original input pattern given another pattern using Hamming distance 
+	public int[] getClosestInput(int[] input) {
+		int minDist = input.length;
+		int minIndex = 0;
+		for(int i = 0 ; i < this.inputs.size() ; i++) {
+			int d = this.hammingDistance(input, this.inputs.get(i));
+			if(d < minDist) {
+				minDist = d;
+				minIndex = i;
+			}
+		}
+		return this.inputs.get(minIndex);
+	}
 	
 	public String printSize() {
 		return this.width + "x" + this.height + " Network";
@@ -118,29 +118,29 @@ public class Network {
 		this.outputs.add(outputs);
 	}
 	
-	// // returns the least number of 1s in 2 patterns (threshold)
-	// private int getU(int[] inputs, int[] original) {
-	// 	int u = 0; 
-	// 	int u2 = 0;
-	// 	for(int i = 0 ; i < inputs.length ; i++) {
-	// 		u += inputs[i];
-	// 		u2 += original[i];
-	// 	}
-	// 	return u <= u2 ? u : u2;
-	// }
+	// returns the least number of 1s in 2 patterns (threshold)
+	private int getU(int[] inputs, int[] original) {
+		int u = 0; 
+		int u2 = 0;
+		for(int i = 0 ; i < inputs.length ; i++) {
+			u += inputs[i];
+			u2 += original[i];
+		}
+		return u <= u2 ? u : u2;
+	}
 	
-	// // returns the load parameter of the network
-	// public double getLoadParameter() {
-	// 	return this.inputs.size() / Math.sqrt(this.size);
-	// }
+	// returns the load parameter of the network
+	public double getLoadParameter() {
+		return this.inputs.size() / this.width;
+	}
 	
-	// // returns the fraction of strengthened synapses
-	// public double synapsesLoad() {
-	// 	int activeSynapseCount = 0;
-	// 	for(int i = 0 ; i < this.size ; i++) 
-	// 		activeSynapseCount += this.synapses[i];
-	// 	return activeSynapseCount / (double)this.size;
-	// }
+	// returns the fraction of strengthened synapses
+	public double synapsesLoad() {
+		int activeSynapseCount = 0;
+		for(int i = 0 ; i < this.synapses.length ; i++) 
+			activeSynapseCount += this.synapses[i];
+		return activeSynapseCount / (double)this.synapses.length;
+	}
 	
 	public void pop() {
 		this.inputs.remove(inputs.size() -1);

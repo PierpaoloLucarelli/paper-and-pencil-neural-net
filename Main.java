@@ -23,13 +23,16 @@ public class Main {
 		trainNet(n, inputs, outputs);
 		// System.out.println(n);
 		int[] result = n.test(i1, true);
-		// System.out.println("Output neurons after testing: " + Arrays.toString(result));
+		System.out.println("Output neurons after testing: " + Arrays.toString(result));
+		System.out.println("\nSynapses matrix:\n\n"+n);
+
 	}
 
 	
 	public static void trainNet(Network n, int[][] inputs, int[] outputs) {
-		System.out.print("Training " + n.printSize());
-		System.out.print(" with input: " + Arrays.toString(inputs));
+		System.out.print("Training " + n.printSize() + " with inputs: ");
+		for(int[] i : inputs)
+			System.out.print(Arrays.toString(i));
 		System.out.println(" and output: " + Arrays.toString(outputs));
 		n.train(inputs, outputs);
 	}
